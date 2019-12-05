@@ -1,0 +1,40 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'io.xylia.platform.jsonapi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+ext['jsonapi-converter.version'] = '0.9'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.github.jasminb:jsonapi-converter:0.9'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '3.0.0'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
+}
+
+test {
+    useJUnitPlatform()
+}

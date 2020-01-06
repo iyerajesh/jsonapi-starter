@@ -6,7 +6,6 @@ import io.xylia.platform.jsonapi.exceptions.UnprocessableEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,19 +20,19 @@ public class UserController {
     private static Map<Long, User> users = new ConcurrentHashMap<>();
 
     @PostMapping
-    public User create(@RequestBody @Valid User user) {
+    public User create(@RequestBody User user) {
 
-        log.info("Create user [{}, {}]", user.getUsername(), user.getEmail());
         if (user.getId() == null)
             user.setId(ID_GENERATOR.getAndIncrement());
 
-        if (users.values().stream().map(User::getUsername).anyMatch(username -> username.equals(user.getUsername()))) {
+        if (users.values().stream().map(User::getUsername).anyMatch(username -> user.getUsername().equals(username))) {
             throw new UnprocessableEntityException("name", "Username " + user.getUsername() + " already exists!");
         }
 
         users.put(user.getId(), user);
         return user;
     }
+
 
     @GetMapping
     public List<User> filter(FilterParameters filterParameters) {

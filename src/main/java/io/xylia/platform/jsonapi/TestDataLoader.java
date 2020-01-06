@@ -14,13 +14,16 @@ public class TestDataLoader {
     @Autowired
     private UserController userController;
 
+
     @PostConstruct
     public void setup() {
-        IntStream.rangeClosed(1, 2).mapToObj(i -> {
-            User user = new User();
-            user.setUsername("user" + i);
-            user.setEmail("user" + i + "@domain.com");
-            return user;
-        }).forEach(userController::create);
+
+        IntStream.range(1, 4)
+                .mapToObj(i -> {
+                    User user = new User();
+                    user.setUsername("user" + i);
+                    user.setEmail("user" + i + "@domain.com");
+                    return user;
+                }).forEach(userController::create);
     }
 }

@@ -4,11 +4,19 @@ plugins {
     id 'java'
 }
 
-group = 'io.xylia.platform.jsonapi'
-version = '0.0.1-SNAPSHOT'
+group = 'io.xylia.platform'
+version = '1.0.1'
 sourceCompatibility = '1.8'
 
 ext['jsonapi-converter.version'] = '0.9'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
 
 configurations {
     compileOnly {
@@ -36,6 +44,13 @@ dependencies {
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
 
 }
+
+task customFatJar(type: Jar) {
+    baseName = 'jsonapi-converter-starter'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 
 test {
     useJUnitPlatform()
